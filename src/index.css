@@ -1,0 +1,885 @@
+/* ============================================================
+   DUA REMINDER — Design System
+   All styles live here. No inline styles. No Tailwind.
+   ============================================================ */
+
+/* 1. DESIGN TOKENS — Light Mode (:root) */
+:root {
+  /* Backgrounds */
+  --bg: #e8e8ea;
+  /* page bg — off-white so cards float above it */
+  --surface: #ffffff;
+  /* card face */
+  --surface-2: #f4f4f5;
+  /* secondary surfaces (collapsibles, pills bg) */
+  --surface-3: #e4e4e7;
+  /* tertiary (seek bar track) */
+
+  /* Borders */
+  --border: #d4d4d8;
+
+  /* Text */
+  --text-primary: #09090b;
+  --text-secondary: #52525b;
+  --text-muted: #a1a1aa;
+  --text-arabic: #18181b;
+  /* slightly richer for Arabic calligraphy */
+
+  /* Elevation */
+  --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.04), 0 10px 40px rgba(0, 0, 0, 0.10);
+  --drawer-shadow: 0 -8px 40px rgba(0, 0, 0, 0.12);
+
+  /* Shape */
+  --radius-card: 24px;
+  --radius-pill: 100px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+
+  /* Typography */
+  --font-arabic: 'Amiri', serif;
+  --font-ui: 'Inter', sans-serif;
+
+  /* Motion */
+  --transition: 0.22s ease;
+  --transition-slow: 0.38s cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* Spacing */
+  --card-mx: 20px;
+  /* horizontal margin around card */
+  --card-px: 24px;
+  /* internal card padding */
+}
+
+/* 2. DESIGN TOKENS — Dark Mode */
+[data-theme="dark"] {
+  --bg: #09090b;
+  --surface: #1c1c1f;
+  --surface-2: #27272a;
+  --surface-3: #3f3f46;
+  --border: #3f3f46;
+  --text-primary: #fafafa;
+  --text-secondary: #a1a1aa;
+  --text-muted: #71717a;
+  --text-arabic: #f4f4f5;
+  --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.2), 0 10px 40px rgba(0, 0, 0, 0.5);
+  --drawer-shadow: 0 -8px 40px rgba(0, 0, 0, 0.5);
+}
+
+/* 3. CSS RESET */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-ui);
+  background-color: var(--bg);
+  color: var(--text-primary);
+  min-height: 100dvh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  transition: background-color var(--transition), color var(--transition);
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-family: inherit;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+/* 4. LAYOUT */
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  max-width: 480px;
+  /* max phone width — centers on larger screens */
+  margin: 0 auto;
+  position: relative;
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+  width: 100%;
+  overflow: hidden;
+  /* Prevent body scroll, handle scroll internally per-pane */
+}
+
+.card-stage {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 0 24px;
+  overflow: hidden;
+  position: relative;
+}
+
+/* 5. HEADER */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px var(--card-mx);
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  z-index: 10;
+}
+
+.header-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+}
+
+.settings-icon-btn {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  transition: background var(--transition), color var(--transition);
+}
+
+.settings-icon-btn:hover {
+  background: var(--surface-2);
+  color: var(--text-primary);
+}
+
+/* 6. TAG FILTER */
+.tag-filter {
+  display: flex;
+  gap: 8px;
+  padding: 12px var(--card-mx);
+  overflow-x: auto;
+  scrollbar-width: none;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+
+.tag-filter::-webkit-scrollbar {
+  display: none;
+}
+
+.tag-pill {
+  flex-shrink: 0;
+  padding: 6px 14px;
+  border-radius: var(--radius-pill);
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  transition: all var(--transition);
+  white-space: nowrap;
+}
+
+.tag-pill:hover {
+  color: var(--text-primary);
+  border-color: var(--text-muted);
+}
+
+.tag-pill-active {
+  background: rgba(128, 128, 128, 0.25);
+  /* neutral grey — works on both light and dark themes */
+  color: var(--text-primary);
+  border-color: rgba(128, 128, 128, 0.4);
+}
+
+/* 7. DUA CARD (SPLIT LAYOUT) */
+.dua-card {
+  background: var(--surface);
+  border-radius: var(--radius-card);
+  box-shadow: var(--card-shadow);
+
+  /* Fixed sizing logic */
+  width: 90vw;
+  max-width: 440px;
+  height: 80vh;
+  max-height: 850px;
+
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  /* panes handle scaling */
+
+  transition: transform var(--transition-slow), opacity var(--transition);
+  position: relative;
+}
+
+/* Card entrance animation */
+.dua-card-enter {
+  animation: card-in 0.3s var(--transition-slow) both;
+}
+
+@keyframes card-in {
+  from {
+    transform: translateX(40px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* PANES */
+.dua-pane {
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  overflow: hidden;
+}
+
+.dua-pane-top {
+  flex: 6;
+  /* 60% — of the 90% remaining after title strip */
+}
+
+.dua-pane-bottom {
+  flex: 3;
+  /* 30% */
+}
+
+.pane-content {
+  flex: 1;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+  padding-right: 4px;
+  /* affordance for scrollbar */
+}
+
+.pane-divider {
+  height: 1px;
+  background-color: var(--border);
+  width: calc(100% - 48px);
+  /* respect padding */
+  margin: 0 auto;
+}
+
+/* HEADERS & CONTROLS */
+.dua-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  flex-shrink: 0;
+}
+
+/* TITLE STRIP — always at the top of the card */
+.dua-title-strip {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  padding: 0 var(--card-px);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+  min-height: 0;
+}
+
+.tag-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.tag-badge {
+  padding: 3px 10px;
+  border-radius: var(--radius-pill);
+  font-size: 0.7rem;
+  font-weight: 500;
+  background: var(--surface-2);
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+  text-transform: lowercase;
+}
+
+.top-pane-controls,
+.bottom-pane-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.icon-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--surface-2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  transition: background var(--transition);
+}
+
+.icon-btn.active {
+  background: var(--border);
+}
+
+.pill-btn {
+  padding: 5px 14px;
+  border-radius: var(--radius-pill);
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  transition: all var(--transition);
+}
+
+.pill-btn.active {
+  background: var(--text-primary);
+  color: var(--bg);
+  border-color: var(--text-primary);
+}
+
+.dua-title {
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: var(--text-secondary);
+  letter-spacing: -0.01em;
+  text-align: center;
+}
+
+/* TYPOGRAPHY IN PANES */
+.dua-arabic-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.dua-arabic {
+  font-family: var(--font-arabic);
+  font-size: 2rem;
+  /* USER FIX: Tighten line height for non-calligraphic Noto Sans Arabic */
+  line-height: 1.5;
+  color: var(--text-arabic);
+  text-align: right;
+  direction: rtl;
+  flex: 1;
+  word-break: break-word;
+}
+
+.dua-reference {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  text-align: right;
+  margin-bottom: 20px;
+}
+
+.dua-play-btn {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--surface-2);
+  border: 1.5px solid var(--border);
+  color: var(--text-secondary);
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition);
+  margin-top: 4px;
+}
+
+.dua-play-btn:hover,
+.dua-play-btn.playing {
+  background: var(--text-primary);
+  color: var(--bg);
+  border-color: var(--text-primary);
+}
+
+.dua-play-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.dua-transliteration {
+  font-size: 0.85rem;
+  font-style: italic;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.dua-meaning {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--text-primary);
+}
+
+.section-title {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+
+.section-text {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+/* pane-section must be flex so content can flex-grow inside it */
+.pane-section {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+}
+
+/* Transliteration pinned to the bottom of the Top pane */
+.dua-transliteration-bottom {
+  margin-top: auto;
+  padding-top: 8px;
+}
+
+.fade-in {
+  animation: fadeIn 0.2s ease-in both;
+}
+
+.slide-in {
+  animation: slideIn 0.2s ease-out both;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.media-player.open {
+  max-height: 120px;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.media-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.media-play-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--text-primary);
+  color: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  flex-shrink: 0;
+  transition: opacity var(--transition);
+}
+
+.media-play-btn:disabled {
+  opacity: 0.4;
+}
+
+.media-rewind-btn {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  padding: 6px;
+  border-radius: var(--radius-sm);
+  transition: background var(--transition);
+}
+
+.media-rewind-btn:hover {
+  background: var(--surface-3);
+}
+
+.media-time {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-left: auto;
+  font-variant-numeric: tabular-nums;
+}
+
+.media-seek-bar {
+  width: 100%;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--surface-3);
+  appearance: none;
+  cursor: pointer;
+  accent-color: var(--text-primary);
+}
+
+/* 9. LANGUAGE TAB */
+.language-tab {
+  display: flex;
+  background: var(--surface-2);
+  border-radius: var(--radius-sm);
+  padding: 3px;
+  border: 1px solid var(--border);
+  align-self: flex-start;
+}
+
+.language-tab-btn {
+  padding: 5px 14px;
+  border-radius: calc(var(--radius-sm) - 2px);
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  transition: all var(--transition);
+}
+
+.language-tab-active {
+  background: var(--surface);
+  color: var(--text-primary);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+}
+
+.dua-meaning {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: var(--text-secondary);
+  min-height: 48px;
+  /* prevent layout jump while loading */
+}
+
+/* 10. COLLAPSIBLE SECTIONS (Story / Instructions) */
+.collapsible-section {
+  border-top: 1px solid var(--border);
+  padding-top: 12px;
+}
+
+.collapsible-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 4px 0;
+  transition: color var(--transition);
+}
+
+.collapsible-toggle:hover {
+  color: var(--text-primary);
+}
+
+.collapsible-chevron {
+  transition: transform var(--transition);
+}
+
+.collapsible-chevron.open {
+  transform: rotate(180deg);
+}
+
+.collapsible-body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height var(--transition-slow);
+}
+
+.collapsible-body.open {
+  max-height: 400px;
+}
+
+.collapsible-text {
+  font-size: 0.875rem;
+  line-height: 1.75;
+  color: var(--text-secondary);
+  padding: 10px 0 4px;
+}
+
+/* 11. SETTINGS DRAWER */
+.settings-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 40;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--transition);
+}
+
+.settings-backdrop.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.settings-drawer {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%) translateY(100%);
+  width: 100%;
+  max-width: 480px;
+  background: var(--surface);
+  border-radius: var(--radius-card) var(--radius-card) 0 0;
+  box-shadow: var(--drawer-shadow);
+  z-index: 50;
+  padding: 8px var(--card-px) env(safe-area-inset-bottom, 24px);
+  transition: transform var(--transition-slow);
+}
+
+.settings-drawer.open {
+  transform: translateX(-50%) translateY(0);
+}
+
+.drawer-handle {
+  width: 36px;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--border);
+  margin: 8px auto 20px;
+}
+
+.settings-title {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: var(--text-primary);
+}
+
+.setting-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 0;
+  border-top: 1px solid var(--border);
+}
+
+.setting-label {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.setting-sublabel {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.theme-options {
+  display: flex;
+  gap: 6px;
+}
+
+.theme-btn {
+  padding: 5px 12px;
+  border-radius: var(--radius-pill);
+  font-size: 0.75rem;
+  font-weight: 500;
+  border: 1.5px solid var(--border);
+  color: var(--text-secondary);
+  background: var(--surface-2);
+  transition: all var(--transition);
+}
+
+.theme-btn.active {
+  border-color: var(--text-primary);
+  color: var(--text-primary);
+  background: var(--surface);
+}
+
+/* 12. SWIPE NAVIGATION HINT — show partial card edges */
+.swipe-hint-left,
+.swipe-hint-right {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 8px;
+  height: 60px;
+  border-radius: var(--radius-pill);
+  background: var(--border);
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.swipe-hint-left {
+  left: 8px;
+}
+
+.swipe-hint-right {
+  right: 8px;
+}
+
+/* 13. BOTTOM NAV */
+.bottom-nav {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  padding: 8px 0 calc(8px + env(safe-area-inset-bottom, 0px));
+  z-index: 20;
+}
+
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  color: var(--text-muted);
+  width: 60px;
+  transition: color var(--transition);
+}
+
+.nav-item.active {
+  color: var(--text-primary);
+}
+
+.nav-icon {
+  font-size: 1.25rem;
+}
+
+.nav-label {
+  font-size: 0.65rem;
+  font-weight: 500;
+}
+
+/* 14. TAGS SIDEBAR (slides from left) */
+.tags-sidebar-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 40;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--transition);
+}
+
+.tags-sidebar-backdrop.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.tags-sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 60%;
+  max-width: 290px;
+  height: 100dvh;
+  background: var(--surface);
+  box-shadow: 4px 0 24px rgba(0, 0, 0, 0.15);
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  transform: translateX(-100%);
+  transition: transform var(--transition-slow);
+}
+
+.tags-sidebar.open {
+  transform: translateX(0);
+}
+
+.tags-sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 20px 12px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.tags-sidebar-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px 20px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.tags-category-title {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  letter-spacing: 0.06em;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.text-btn {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  text-decoration: underline;
+}
+
+.text-btn:disabled {
+  opacity: 0.4;
+  text-decoration: none;
+}
+
+.icon-btn-text {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* 15. UTILITY */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
