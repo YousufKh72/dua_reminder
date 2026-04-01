@@ -235,16 +235,24 @@ ol {
   font-size: 0.82rem;
   font-weight: 500;
   color: var(--text-secondary);
-  background: transparent;
-  border: 1.5px solid transparent;
+  background: var(--surface-2);
+  border: 1.5px solid var(--border);
   transition: all var(--transition);
   white-space: nowrap;
 }
 
-.tag-pill:hover {
-  color: var(--text-primary);
-  border-color: var(--border);
-  background: var(--surface-2);
+/* Ghost style only on devices that support true hover (desktop/mouse) */
+@media (hover: hover) {
+  .tag-pill {
+    background: transparent;
+    border-color: transparent;
+  }
+
+  .tag-pill:hover {
+    color: var(--text-primary);
+    border-color: var(--border);
+    background: var(--surface-2);
+  }
 }
 
 .tag-pill-active {
@@ -1149,11 +1157,13 @@ ol {
 }
 
 [data-ui-theme="glass"] {
-  --surface:   rgba(255, 255, 255, 0.55);
-  --surface-2: rgba(255, 255, 255, 0.32);
-  --surface-3: rgba(255, 255, 255, 0.18);
-  --border:    rgba(180, 180, 210, 0.45);
-  --card-shadow: 0 8px 32px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04);
+  --surface:        rgba(255, 255, 255, 0.55);
+  --surface-2:      rgba(255, 255, 255, 0.32);
+  --surface-3:      rgba(255, 255, 255, 0.18);
+  --border:         rgba(180, 180, 210, 0.45);
+  --card-shadow:    0 8px 32px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04);
+  --text-secondary: #2a2a30;
+  --text-muted:     #4a4a52;
 }
 
 [data-ui-theme="glass"] .dua-card,
@@ -1172,11 +1182,13 @@ ol {
 }
 
 [data-theme="dark"][data-ui-theme="glass"] {
-  --surface:   rgba(255, 255, 255, 0.07);
-  --surface-2: rgba(255, 255, 255, 0.04);
-  --surface-3: rgba(255, 255, 255, 0.02);
-  --border:    rgba(255, 255, 255, 0.13);
-  --card-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  --surface:        rgba(255, 255, 255, 0.07);
+  --surface-2:      rgba(255, 255, 255, 0.04);
+  --surface-3:      rgba(255, 255, 255, 0.02);
+  --border:         rgba(255, 255, 255, 0.13);
+  --card-shadow:    0 8px 32px rgba(0, 0, 0, 0.5);
+  --text-secondary: #d4d4de;
+  --text-muted:     #b4b4be;
 }
 
 /* 18. UTILITY */
