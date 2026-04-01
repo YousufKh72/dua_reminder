@@ -8,6 +8,12 @@ const ICONS = {
             <path d="M9 21V12h6v9" />
         </svg>
     ),
+    read: (
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+            <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+        </svg>
+    ),
     plan: (
         <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <rect x="3" y="4" width="18" height="18" rx="2" />
@@ -19,33 +25,26 @@ const ICONS = {
             <line x1="8" y1="18" x2="10" y2="18" />
         </svg>
     ),
-    search: (
-        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <circle cx="11" cy="11" r="7" />
-            <line x1="21" y1="21" x2="16.65" y2="16.65" />
-        </svg>
-    ),
     favorites: (
         <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z" />
         </svg>
     ),
-    profile: (
+    settings: (
         <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <circle cx="12" cy="8" r="4" />
             <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" />
         </svg>
-    )
+    ),
 };
 
 export default function BottomNav({ activeTab, onChangeTab }) {
-
     const tabs = [
-        { id: 'home', label: 'Home' },
-        { id: 'plan', label: 'Plan' },
-        { id: 'search', label: 'Search' },
+        { id: 'home',      label: 'Home'      },
+        { id: 'read',      label: 'Read'      },
+        { id: 'plan',      label: 'Plan'      },
         { id: 'favorites', label: 'Favorites' },
-        { id: 'profile', label: 'Profile' }
+        { id: 'settings',  label: 'Settings'  },
     ];
 
     return (

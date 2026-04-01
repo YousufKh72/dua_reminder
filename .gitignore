@@ -58,3 +58,9 @@ Developer Master BluePrint.txt
 
 # Admin panel (phase 2 — not deployed yet)
 admin/
+
+# Phase 2 hooks (work in progress, not yet integrated)
+src/hooks/useAudio.js
+
+# Claude Code local config (personal/AI tooling)
+.claude/
