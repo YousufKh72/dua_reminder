@@ -235,16 +235,16 @@ ol {
   font-size: 0.82rem;
   font-weight: 500;
   color: var(--text-secondary);
-  background: var(--surface-2);
-  border: 1.5px solid var(--border);
+  background: transparent;
+  border: 1.5px solid transparent;
   transition: all var(--transition);
   white-space: nowrap;
 }
 
 .tag-pill:hover {
   color: var(--text-primary);
-  border-color: var(--text-muted);
-  background: var(--surface);
+  border-color: var(--border);
+  background: var(--surface-2);
 }
 
 .tag-pill-active {
@@ -1136,7 +1136,50 @@ ol {
   font-size: 0.9rem;
 }
 
-/* 17. UTILITY */
+/* 17. GLASS THEME */
+
+/* Light + Glass */
+[data-ui-theme="glass"] body {
+  background: linear-gradient(135deg, #e0e7ff 0%, #d1fae5 50%, #fce7f3 100%);
+  background-attachment: fixed;
+}
+
+[data-ui-theme="glass"] .app-container {
+  background: transparent;
+}
+
+[data-ui-theme="glass"] {
+  --surface:   rgba(255, 255, 255, 0.55);
+  --surface-2: rgba(255, 255, 255, 0.32);
+  --surface-3: rgba(255, 255, 255, 0.18);
+  --border:    rgba(180, 180, 210, 0.45);
+  --card-shadow: 0 8px 32px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+[data-ui-theme="glass"] .dua-card,
+[data-ui-theme="glass"] .header,
+[data-ui-theme="glass"] .bottom-nav,
+[data-ui-theme="glass"] .settings-drawer,
+[data-ui-theme="glass"] .tags-sidebar {
+  backdrop-filter: blur(18px) saturate(160%);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+}
+
+/* Dark + Glass */
+[data-theme="dark"][data-ui-theme="glass"] body {
+  background: linear-gradient(135deg, #0a0a1a 0%, #0d1b2a 50%, #1a0a2e 100%);
+  background-attachment: fixed;
+}
+
+[data-theme="dark"][data-ui-theme="glass"] {
+  --surface:   rgba(255, 255, 255, 0.07);
+  --surface-2: rgba(255, 255, 255, 0.04);
+  --surface-3: rgba(255, 255, 255, 0.02);
+  --border:    rgba(255, 255, 255, 0.13);
+  --card-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+/* 18. UTILITY */
 .visually-hidden {
   position: absolute;
   width: 1px;
