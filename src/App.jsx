@@ -9,6 +9,7 @@ import TagsMenu from './components/TagsMenu';
 import DuaCard from './components/DuaCard/DuaCard';
 import Settings from './components/Settings/Settings';
 import ProfilePage from './components/ProfilePage';
+import LibraryPage from './components/LibraryPage';
 
 // Helper to wrap around arrays infinitely
 function wrap(index, length) {
@@ -49,6 +50,8 @@ export default function App() {
 
   const [activeLanguage, setActiveLanguage] = useState(prefs.languages[0] || 'english');
 
+  const [activeTab, setActiveTab] = useState('home');
+
   // Load Data on mount
   useEffect(() => {
     async function loadData() {
@@ -75,9 +78,7 @@ export default function App() {
   // Filtered dua list based on selected tags object
   const filteredDuas = useMemo(() => {
     const selectedValues = Object.values(activeTags);
-    if (selectedValues.length === 0) return duas; // "All" state: no filters
-
-    // Dua must match ALL selected category tags (intersection logic)
+    if (selectedValues.length === 0) return duas;
     return duas.filter(d => {
       if (!d.tags) return false;
       return selectedValues.every(tag => d.tags.includes(tag));
@@ -107,7 +108,6 @@ export default function App() {
     }
   }, [prefs, activeLanguage]);
 
-  // Handlers for Swiping from DuaCard
   const handleNextDua = useCallback(() => {
     setDuaIndex(i => wrap(i + 1, filteredDuas.length));
   }, [filteredDuas.length]);
@@ -116,55 +116,79 @@ export default function App() {
     setDuaIndex(i => wrap(i - 1, filteredDuas.length));
   }, [filteredDuas.length]);
 
-  // We remove Up/Down swipe logic since "Category Jumping" makes less sense with multi-select filtering
-
   function handleTagsChange(newTags) {
     setActiveTags(newTags);
-    setDuaIndex(0); // Reset dua position when changing filters
+    setDuaIndex(0);
   }
 
-  const [activeTab, setActiveTab] = useState('home'); // 'home' | 'search' | 'favorites' | 'plan' | 'profile'
+  // Tap a dua in the library → jump to it in Read tab
+  function handleDuaSelect(duaId) {
+    const idx = filteredDuas.findIndex(d => d.id === duaId);
+    if (idx !== -1) {
+      setDuaIndex(idx);
+    } else {
+      setActiveTags({});
+      const allIdx = duas.findIndex(d => d.id === duaId);
+      setDuaIndex(allIdx !== -1 ? allIdx : 0);
+    }
+    setActiveTab('read');
+  }
+
+  const currentDuaTags = activeTab === 'read' && currentDua ? currentDua.tags : [];
 
   return (
     <div className="app-container">
       <Header
         activeTab={activeTab}
-        onBack={() => setActiveTab('home')}
         onTagsMenuOpen={() => setTagsMenuOpen(true)}
+        onSearchOpen={() => { /* placeholder */ }}
+        hasActiveFilters={Object.keys(activeTags).length > 0}
+        currentDuaTags={currentDuaTags}
       />
 
       {activeTab === 'home' && (
-        <main className="card-stage" style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+        <LibraryPage
+          onTagSelect={(category, tag) => {
+            setActiveTags({ [category]: tag });
+            setDuaIndex(0);
+            setActiveTab('read');
+          }}
+        />
+      )}
+
+      {activeTab === 'read' && (
+        <main className="card-stage">
           {isLoading ? (
-            <div style={{ textAlign: 'center', marginTop: '40px', color: 'var(--text-muted)' }}>
-              <p>Loading Duas from Google Sheets...</p>
+            <div className="placeholder-view">
+              <p className="placeholder-text">Loading duas…</p>
             </div>
           ) : filteredDuas.length > 0 ? (
             <DuaCard
-              key={currentDua.id + "_" + activeLanguage} // Force full re-mount on lang change for anim
+              key={currentDua.id}
               dua={currentDua}
               activeLanguage={activeLanguage}
               onLanguageChange={setActiveLanguage}
               languages={prefs.languages}
-              onNext={handleNextDua}    // Sweeping left invokes "next"
-              onPrev={handlePrevDua}    // Sweeping right invokes "prev"
+              onNext={handleNextDua}
+              onPrev={handlePrevDua}
             />
           ) : (
-            <div className="dua-card" style={{ textAlign: 'center', color: 'var(--text-muted)', padding: '40px 24px' }}>
-              <p>No duas found for these tags.</p>
+            <div className="dua-card placeholder-view">
+              <p className="placeholder-text">No duas found for these filters.</p>
             </div>
           )}
         </main>
       )}
 
-      {activeTab === 'profile' && (
+      {activeTab === 'settings' && (
         <ProfilePage onSettingsOpen={() => setSettingsOpen(true)} />
       )}
 
-      {/* Search, Favorites, Plan placeholders */}
-      {['search', 'favorites', 'plan'].includes(activeTab) && (
-        <main style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <p style={{ color: 'var(--text-muted)' }}>{activeTab.charAt(0).toUpperCase() + activeTab.slice(1)} view coming soon.</p>
+      {(activeTab === 'plan' || activeTab === 'favorites') && (
+        <main className="placeholder-view">
+          <p className="placeholder-text">
+            {activeTab === 'plan' ? 'Plan' : 'Favorites'} coming soon.
+          </p>
         </main>
       )}
 

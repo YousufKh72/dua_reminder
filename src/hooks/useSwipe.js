@@ -10,7 +10,10 @@ import { useState, useCallback } from 'react';
  * @param {Function} callbacks.onSwipedDown - Triggered when the user swipes down (vertical scroll/prev category).
  * @param {number} threshold - Minimum distance in pixels to register as a swipe (default: 50).
  */
-export function useSwipe({ onSwipedLeft, onSwipedRight, onSwipedUp, onSwipedDown, threshold = 50 }) {
+export function useSwipe({ onSwipedLeft, onSwipedRight, onSwipedUp, onSwipedDown, threshold = 50, xThreshold, yThreshold }) {
+    const xThr = xThreshold ?? threshold;
+    const yThr = yThreshold ?? threshold;
+
     const [touchStart, setTouchStart] = useState({ x: null, y: null });
     const [touchEnd, setTouchEnd] = useState({ x: null, y: null });
 
@@ -35,10 +38,10 @@ export function useSwipe({ onSwipedLeft, onSwipedRight, onSwipedUp, onSwipedDown
         const distanceX = touchStart.x - touchEnd.x;
         const distanceY = touchStart.y - touchEnd.y;
 
-        const isLeftSwipe = distanceX > threshold;
-        const isRightSwipe = distanceX < -threshold;
-        const isUpSwipe = distanceY > threshold;
-        const isDownSwipe = distanceY < -threshold;
+        const isLeftSwipe = distanceX > xThr;
+        const isRightSwipe = distanceX < -xThr;
+        const isUpSwipe = distanceY > yThr;
+        const isDownSwipe = distanceY < -yThr;
 
         // Determine if movement is mostly horizontal or vertical
         if (Math.abs(distanceX) > Math.abs(distanceY)) {
@@ -62,7 +65,7 @@ export function useSwipe({ onSwipedLeft, onSwipedRight, onSwipedUp, onSwipedDown
         // Reset states
         setTouchStart({ x: null, y: null });
         setTouchEnd({ x: null, y: null });
-    }, [touchStart, touchEnd, threshold, onSwipedLeft, onSwipedRight, onSwipedUp, onSwipedDown]);
+    }, [touchStart, touchEnd, xThr, yThr, onSwipedLeft, onSwipedRight, onSwipedUp, onSwipedDown]);
 
     return {
         onTouchStart: handleTouchStart,
