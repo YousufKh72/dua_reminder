@@ -1221,6 +1221,9 @@ ol {
   box-shadow: 0 2px 8px rgba(0,0,0,0.07), inset 0 1.5px 0 rgba(255,255,255,0.75);
 }
 
+/* Audio button stays circular */
+[data-ui-theme="glass"] .audio-icon-btn { border-radius: 50%; }
+
 /* Language tab inner buttons */
 [data-ui-theme="glass"] .language-tab-btn {
   border-radius: 8px;
@@ -1294,6 +1297,42 @@ ol {
 [data-theme="dark"][data-ui-theme="glass"] .view-menu-trigger.open,
 [data-theme="dark"][data-ui-theme="glass"] .bottom-action-btn.active,
 [data-theme="dark"][data-ui-theme="glass"] .audio-icon-btn.active {
+  background: rgba(0, 0, 0, 0.65);
+  border-color: rgba(255, 255, 255, 0.38);
+  color: #fafafa;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.5), inset 0 1.5px 0 rgba(255,255,255,0.14);
+}
+
+/* Tag pills — match card buttons in glass */
+[data-ui-theme="glass"] .tag-pill {
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  background: rgba(255, 255, 255, 0.28);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07), inset 0 1.5px 0 rgba(255,255,255,0.75);
+}
+[data-ui-theme="glass"] .tag-pill:hover {
+  background: rgba(255, 255, 255, 0.58);
+  border-color: rgba(255, 255, 255, 0.85);
+  color: var(--text-primary);
+}
+[data-ui-theme="glass"] .tag-pill-active {
+  background: rgba(255, 255, 255, 0.93);
+  border-color: rgba(255, 255, 255, 0.95);
+  color: #09090b;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.12), inset 0 1.5px 0 rgba(255,255,255,1);
+}
+
+[data-theme="dark"][data-ui-theme="glass"] .tag-pill {
+  border-color: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.07);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3), inset 0 1.5px 0 rgba(255,255,255,0.1);
+}
+[data-theme="dark"][data-ui-theme="glass"] .tag-pill:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.38);
+  color: var(--text-primary);
+}
+[data-theme="dark"][data-ui-theme="glass"] .tag-pill-active {
   background: rgba(0, 0, 0, 0.65);
   border-color: rgba(255, 255, 255, 0.38);
   color: #fafafa;
