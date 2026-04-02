@@ -241,10 +241,18 @@ ol {
   white-space: nowrap;
 }
 
-.tag-pill:hover {
-  color: var(--text-primary);
-  border-color: var(--text-muted);
-  background: var(--surface);
+/* Ghost style only on devices that support true hover (desktop/mouse) */
+@media (hover: hover) {
+  .tag-pill {
+    background: transparent;
+    border-color: transparent;
+  }
+
+  .tag-pill:hover {
+    color: var(--text-primary);
+    border-color: var(--border);
+    background: var(--surface-2);
+  }
 }
 
 .tag-pill-active {
@@ -1005,6 +1013,12 @@ ol {
   margin-bottom: 10px;
 }
 
+.tag-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
 .tags-category-badge {
   font-size: 0.65rem;
   font-weight: 700;
@@ -1136,7 +1150,224 @@ ol {
   font-size: 0.9rem;
 }
 
-/* 17. UTILITY */
+/* 17. GLASS THEME */
+
+/* Light + Glass */
+[data-ui-theme="glass"] body {
+  background: linear-gradient(135deg, #e0e7ff 0%, #d1fae5 50%, #fce7f3 100%);
+  background-attachment: fixed;
+}
+
+[data-ui-theme="glass"] .app-container {
+  background: transparent;
+}
+
+[data-ui-theme="glass"] {
+  --surface:        rgba(255, 255, 255, 0.55);
+  --surface-2:      rgba(255, 255, 255, 0.32);
+  --surface-3:      rgba(255, 255, 255, 0.18);
+  --border:         rgba(180, 180, 210, 0.45);
+  --card-shadow:    0 8px 32px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04);
+  --text-secondary: #2a2a30;
+  --text-muted:     #4a4a52;
+}
+
+[data-ui-theme="glass"] .dua-card,
+[data-ui-theme="glass"] .header,
+[data-ui-theme="glass"] .bottom-nav,
+[data-ui-theme="glass"] .settings-drawer,
+[data-ui-theme="glass"] .tags-sidebar {
+  backdrop-filter: blur(18px) saturate(160%);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+}
+
+/* Dark + Glass */
+[data-theme="dark"][data-ui-theme="glass"] body {
+  background: linear-gradient(135deg, #0a0a1a 0%, #0d1b2a 50%, #1a0a2e 100%);
+  background-attachment: fixed;
+}
+
+[data-theme="dark"][data-ui-theme="glass"] {
+  --surface:        rgba(255, 255, 255, 0.07);
+  --surface-2:      rgba(255, 255, 255, 0.04);
+  --surface-3:      rgba(255, 255, 255, 0.02);
+  --border:         rgba(255, 255, 255, 0.13);
+  --card-shadow:    0 8px 32px rgba(0, 0, 0, 0.5);
+  --text-secondary: #d4d4de;
+  --text-muted:     #b4b4be;
+}
+
+/* GLASS — CARD & BUTTON POLISH */
+
+/* Crystal card border — light glass */
+[data-ui-theme="glass"] .dua-card {
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.10), 0 2px 8px rgba(0,0,0,0.05),
+              inset 0 1.5px 0 rgba(255,255,255,0.95),
+              inset 0 -1px 0 rgba(255,255,255,0.2);
+}
+
+/* Dividers — shimmer gradient */
+[data-ui-theme="glass"] .pane-divider {
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.55) 25%, rgba(255,255,255,0.55) 75%, transparent);
+}
+[data-ui-theme="glass"] .dua-title-strip::after {
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.55) 25%, rgba(255,255,255,0.55) 75%, transparent);
+}
+
+/* Buttons — rounded, shiny border, frosted bg */
+[data-ui-theme="glass"] .view-menu-trigger,
+[data-ui-theme="glass"] .view-menu-item,
+[data-ui-theme="glass"] .bottom-action-btn,
+[data-ui-theme="glass"] .audio-icon-btn,
+[data-ui-theme="glass"] .language-tab {
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  background: rgba(255, 255, 255, 0.28);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07), inset 0 1.5px 0 rgba(255,255,255,0.75);
+}
+
+/* Audio button stays circular */
+[data-ui-theme="glass"] .audio-icon-btn { border-radius: 50%; }
+
+/* View menu items — solid so they read clearly floating over Arabic text */
+[data-ui-theme="glass"] .view-menu-item {
+  background: rgba(255, 255, 255, 0.88);
+  border-color: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.10), inset 0 1.5px 0 rgba(255,255,255,1);
+}
+[data-ui-theme="glass"] .view-menu-item:hover {
+  background: rgba(255, 255, 255, 0.97);
+  border-color: rgba(255, 255, 255, 1);
+}
+
+/* Language tab inner buttons */
+[data-ui-theme="glass"] .language-tab-btn {
+  border-radius: 8px;
+}
+[data-ui-theme="glass"] .language-tab-active {
+  background: rgba(255, 255, 255, 0.75);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+}
+
+/* Hover — brighter */
+[data-ui-theme="glass"] .view-menu-trigger:hover,
+[data-ui-theme="glass"] .view-menu-item:hover,
+[data-ui-theme="glass"] .bottom-action-btn:hover:not(.active),
+[data-ui-theme="glass"] .audio-icon-btn:hover {
+  background: rgba(255, 255, 255, 0.58);
+  border-color: rgba(255, 255, 255, 0.85);
+}
+
+/* Active/open — solid white, clearly clicked */
+[data-ui-theme="glass"] .view-menu-trigger.open,
+[data-ui-theme="glass"] .bottom-action-btn.active,
+[data-ui-theme="glass"] .audio-icon-btn.active {
+  background: rgba(255, 255, 255, 0.93);
+  border-color: rgba(255, 255, 255, 0.95);
+  color: #09090b;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.12), inset 0 1.5px 0 rgba(255,255,255,1);
+}
+
+/* Crystal card border — dark glass */
+[data-theme="dark"][data-ui-theme="glass"] .dua-card {
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5), 0 2px 8px rgba(0,0,0,0.3),
+              inset 0 1.5px 0 rgba(255,255,255,0.14),
+              inset 0 -1px 0 rgba(255,255,255,0.04);
+}
+
+/* Dividers dark glass */
+[data-theme="dark"][data-ui-theme="glass"] .pane-divider {
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.18) 25%, rgba(255,255,255,0.18) 75%, transparent);
+}
+[data-theme="dark"][data-ui-theme="glass"] .dua-title-strip::after {
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.18) 25%, rgba(255,255,255,0.18) 75%, transparent);
+}
+
+/* Buttons dark glass */
+[data-theme="dark"][data-ui-theme="glass"] .view-menu-trigger,
+[data-theme="dark"][data-ui-theme="glass"] .view-menu-item,
+[data-theme="dark"][data-ui-theme="glass"] .bottom-action-btn,
+[data-theme="dark"][data-ui-theme="glass"] .audio-icon-btn,
+[data-theme="dark"][data-ui-theme="glass"] .language-tab {
+  border-color: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.07);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3), inset 0 1.5px 0 rgba(255,255,255,0.1);
+}
+
+/* View menu items dark glass — solid dark */
+[data-theme="dark"][data-ui-theme="glass"] .view-menu-item {
+  background: rgba(8, 8, 18, 0.80);
+  border-color: rgba(255, 255, 255, 0.32);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.45), inset 0 1.5px 0 rgba(255,255,255,0.16);
+}
+[data-theme="dark"][data-ui-theme="glass"] .view-menu-item:hover {
+  background: rgba(8, 8, 18, 0.92);
+  border-color: rgba(255, 255, 255, 0.48);
+}
+
+[data-theme="dark"][data-ui-theme="glass"] .language-tab-active {
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+}
+
+/* Hover dark glass */
+[data-theme="dark"][data-ui-theme="glass"] .view-menu-trigger:hover,
+[data-theme="dark"][data-ui-theme="glass"] .view-menu-item:hover,
+[data-theme="dark"][data-ui-theme="glass"] .bottom-action-btn:hover:not(.active),
+[data-theme="dark"][data-ui-theme="glass"] .audio-icon-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.38);
+}
+
+/* Active/open dark glass — solid dark */
+[data-theme="dark"][data-ui-theme="glass"] .view-menu-trigger.open,
+[data-theme="dark"][data-ui-theme="glass"] .bottom-action-btn.active,
+[data-theme="dark"][data-ui-theme="glass"] .audio-icon-btn.active {
+  background: rgba(0, 0, 0, 0.65);
+  border-color: rgba(255, 255, 255, 0.38);
+  color: #fafafa;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.5), inset 0 1.5px 0 rgba(255,255,255,0.14);
+}
+
+/* Tag pills — match card buttons in glass */
+[data-ui-theme="glass"] .tag-pill {
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  background: rgba(255, 255, 255, 0.28);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07), inset 0 1.5px 0 rgba(255,255,255,0.75);
+}
+[data-ui-theme="glass"] .tag-pill:hover {
+  background: rgba(255, 255, 255, 0.58);
+  border-color: rgba(255, 255, 255, 0.85);
+  color: var(--text-primary);
+}
+[data-ui-theme="glass"] .tag-pill-active {
+  background: rgba(255, 255, 255, 0.93);
+  border-color: rgba(255, 255, 255, 0.95);
+  color: #09090b;
+  box-shadow: 0 4px 14px rgba(0,0,0,0.12), inset 0 1.5px 0 rgba(255,255,255,1);
+}
+
+[data-theme="dark"][data-ui-theme="glass"] .tag-pill {
+  border-color: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.07);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3), inset 0 1.5px 0 rgba(255,255,255,0.1);
+}
+[data-theme="dark"][data-ui-theme="glass"] .tag-pill:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.38);
+  color: var(--text-primary);
+}
+[data-theme="dark"][data-ui-theme="glass"] .tag-pill-active {
+  background: rgba(0, 0, 0, 0.65);
+  border-color: rgba(255, 255, 255, 0.38);
+  color: #fafafa;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.5), inset 0 1.5px 0 rgba(255,255,255,0.14);
+}
+
+/* 18. UTILITY */
 .visually-hidden {
   position: absolute;
   width: 1px;

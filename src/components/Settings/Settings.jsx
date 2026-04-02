@@ -3,6 +3,7 @@
 
 import ThemeSetting from './ThemeSetting';
 import LanguageSetting from './LanguageSetting';
+import UiThemeSetting from './UiThemeSetting';
 
 export default function Settings({ open, onClose, prefs, onPrefsChange }) {
     function handleTheme(theme) {
@@ -11,6 +12,10 @@ export default function Settings({ open, onClose, prefs, onPrefsChange }) {
 
     function handleLanguages(languages) {
         onPrefsChange({ ...prefs, languages });
+    }
+
+    function handleUiTheme(uiTheme) {
+        onPrefsChange({ ...prefs, uiTheme });
     }
 
     return (
@@ -32,6 +37,7 @@ export default function Settings({ open, onClose, prefs, onPrefsChange }) {
                 <div className="drawer-handle" />
                 <h2 className="settings-title">Preferences</h2>
                 <ThemeSetting value={prefs.theme} onChange={handleTheme} />
+                <UiThemeSetting value={prefs.uiTheme || 'classic'} onChange={handleUiTheme} />
                 <LanguageSetting languages={prefs.languages} onChange={handleLanguages} />
             </div>
         </>

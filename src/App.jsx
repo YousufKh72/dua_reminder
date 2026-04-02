@@ -19,11 +19,12 @@ function wrap(index, length) {
 
 // Load user preferences from localStorage
 function loadPrefs() {
+  const defaults = { theme: 'system', languages: ['english', 'bangla'], uiTheme: 'classic' };
   try {
     const saved = localStorage.getItem('dua_prefs');
-    if (saved) return JSON.parse(saved);
+    if (saved) return { ...defaults, ...JSON.parse(saved) };
   } catch (_) { }
-  return { theme: 'system', languages: ['english', 'bangla'] };
+  return defaults;
 }
 
 // Resolve theme accounting for system preference
@@ -99,6 +100,11 @@ export default function App() {
       return () => mq.removeEventListener('change', handler);
     }
   }, [prefs.theme]);
+
+  // Apply UI theme (classic / glass)
+  useEffect(() => {
+    document.documentElement.setAttribute('data-ui-theme', prefs.uiTheme || 'classic');
+  }, [prefs.uiTheme]);
 
   // Save prefs to localStorage whenever they change
   useEffect(() => {
